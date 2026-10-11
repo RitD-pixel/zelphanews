@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Zelpha News</title>
+
+  
+
+
+<style>
+/* =========================
+   GLOBAL
+========================= */
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  background:#111;
+  color:white;
+  font-family:"General Sans", sans-serif;
+  font-size:42px;
+  letter-spacing:-0.05em; 
+  line-height:1.1;
+}
+
+body.light{
+  background:#f5f5f5;
+  color:#111;
+}
+
+/* =========================
+   HEADINGS
+========================= */
+
+h1{
+  text-align:center;
+  margin:20px 0;
+  font-family:"General Sans", sans-serif;
+  font-size:42px;
+  letter-spacing:0em
+  line-height:1.1;
+}
+
+h2{
+  margin:0 0 10px 0;
+  font-family:"General Sans", sans-serif;
+  font-size:20px;
+  letter-spacing:-0.025em;
+  line-height:1.3;
+}
+
+h2,
+a h2 {
+  color: #ffffff;
+}
+
+.featured h2{
+  font-size:34px;
+}
+/* =========================
+   SUBTEXT
+========================= */
+
+p {
+  text-align:center;
+  letter-spacing:0.01em;
+}
+
+/* =========================
+   CONTROLS
+========================= */
+
+.controls{
+  position:sticky;
+  top:0;
+  z-index:100;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:10px;
+
+  padding:12px;
+
+  background:rgba(20,20,20,.65);
+
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.button-row{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:8px;
+}
+
+button{
+  background:rgba(255,255,255,.06);
+  color:white;
+
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:8px;
+
+  padding:8px 12px;
+
+  cursor:pointer;
+
+  font-family:"General Sans", sans-serif;
+  font-size:14px;
+  letter-spacing:-0.01em;
+
+  transition:.25s ease;
+
+  box-shadow:
+    0 2px 10px rgba(0,0,0,.15);
+}
+
+button:hover{
+  transform:translateY(-3px);
+
+  background:rgba(255,255,255,.1);
+
+  box-shadow:
+    0 10px 24px rgba(0,0,0,.25),
+    0 0 16px rgba(77,166,255,.18);
+}
+
+/* =========================
+   SEARCH
+========================= */
+
+#searchInput{
+  width:100%;
+  max-width:420px;
+
+  padding:10px 14px;
+
+  border-radius:10px;
+
+  border:1px solid rgba(255,255,255,.08);
+
+  background:rgba(255,255,255,.05);
+  color:white;
+
+  text-align:center;
+
+  font-family:"General Sans", sans-serif;
+  font-size:14px;
+  letter-spacing:-0.01em;
+
+  outline:none;
+
+  transition:.25s ease;
+}
+
+#searchInput:focus{
+  transform:translateY(-2px);
+
+  box-shadow:
+    0 10px 24px rgba(77,166,255,.15);
+}
+
+/* =========================
+   GRID
+========================= */
+
+#news{
+  max-width:1100px;
+  margin:auto;
+  padding:20px 20px 100px;
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(auto-fit,minmax(280px,1fr));
+
+  gap:18px;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.card{
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 16px;
+
+  overflow:hidden;
+
+  padding:15px;
+
+  transition:.3s ease;
+
+  opacity:0;
+  transform:translateY(10px);
+
+  animation:fadeUp .4s forwards;
+
+  font-family:"General Sans", sans-serif;
+
+  box-shadow:
+    0 6px 20px rgba(0,0,0,.2);
+
+  display:flex;
+  flex-direction:column;
+}
+
+.card:hover{
+  transform:translateY(-4px);
+
+  background:rgba(40,40,40,.85);
+
+  box-shadow:
+    0 16px 36px rgba(0,0,0,.3),
+    0 0 20px rgba(77,166,255,.12);
+}
+
+@keyframes fadeUp{
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+.featured{
+  grid-column:1/-1;
+  border-left:3px solid #4da6ff;
+}
+
+.featured .img-wrap{
+  aspect-ratio:16/7;
+}
+
+/* =========================
+   IMAGE
+========================= */
+
+.img-wrap{
+  width:100%;
+  aspect-ratio:16/9;
+
+  border-radius:10px;
+  overflow:hidden;
+
+  margin-bottom:12px;
+
+  background:#222;
+}
+
+.img-wrap img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+
+  display:block;
+
+  transition:transform .4s ease;
+}
+
+.card:hover img{
+  transform:scale(1.05);
+}
+
+/* =========================
+   TEXT
+========================= */
+
+a{
+  color:#4da6ff;
+  text-decoration:none;
+}
+
+p{
+  font-size:14px;
+  color:#aaa;
+  line-height:1.6;
+}
+
+.summary{
+  margin-top:10px;
+
+  font-size:14px;
+
+  line-height:1.7;
+  letter-spacing:0.01em;
+
+  color:#d0d0d0;
+}
+
+/* =========================
+   SAVE BUTTON
+========================= */
+
+.save-btn{
+  margin-top:auto !important;
+}
+
+/* =========================
+   BOTTOM BAR
+========================= */
+
+.bottom-bar{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+
+  display:flex;
+  justify-content:center;
+  gap:10px;
+
+  padding:10px;
+
+  background:rgba(20,20,20,.7);
+
+  backdrop-filter:blur(18px);
+
+  border-top:1px solid rgba(255,255,255,.08);
+
+  z-index:999;
+}
+
+/* =========================
+   LIGHT MODE
+========================= */
+
+body.light .controls{
+  background:rgba(255,255,255,.72);
+  border-bottom:1px solid rgba(0,0,0,.06);
+}
+
+body.light .bottom-bar{
+  background:rgba(255,255,255,.72);
+  border-top:1px solid rgba(0,0,0,.06);
+}
+
+body.light .card{
+  background:rgba(255,255,255,.72);
+  color:#111;
+  border:1px solid rgba(0,0,0,.06);
+}
+
+body.light button{
+  background:rgba(255,255,255,.75);
+  color:#111;
+  border:1px solid rgba(0,0,0,.06);
+}
+
+body.light #searchInput{
+  background:rgba(255,255,255,.75);
+  color:#111;
+  border:1px solid rgba(0,0,0,.06);
+}
+
+body.light p{
+  color:#444;
+}
+
+body.light .summary{
+  color:#444;
+}
+
+body.light h1,
+body.light h2,
+body.light a h2 {
+  color: #000000;
+}
+
+/* =========================
+   SCROLLBAR
+========================= */
+
+::-webkit-scrollbar{
+  width:10px;
+}
+
+::-webkit-scrollbar-track{
+  background:#111;
+}
+
+::-webkit-scrollbar-thumb{
+  background:#333;
+  border-radius:999px;
+}
+
+::-webkit-scrollbar-thumb:hover{
+  background:#555;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Zelpha <span style="color:aqua;">News</span></h1>
+
+<p id="p"><i>Free news for the world</i></p>
+
+<div class="controls">
+
+  <div class="button-row">
+
+    <button onclick="setCategory('top')">Top</button>
+    <button onclick="setCategory('tech')">Tech</button>
+    <button onclick="setCategory('world')">World</button>
+    <button onclick="setCategory('business')">Business</button>
+    <button onclick="setCategory('science')">Science</button>
+
+  </div>
+
+  <input
+    id="searchInput"
+    placeholder="Search news..."
+  >
+
+</div>
+
+<div id="news"></div>
+
+<div class="bottom-bar">
+
+  <button onclick="toggleTheme()">
+    Theme
+  </button>
+
+  <button onclick="forYou()">
+    For You
+  </button>
+
+  <button onclick="showSaved()">
+    Saved
+  </button>
+
+</div>
+
+<script>
+
+let currentFeed =
+  "https://feeds.npr.org/1001/rss.xml";
+
+let currentCategory = "top";
+
+let allArticles = [];
+let filtered = [];
+
+let index = 0;
+
+const batchSize = 10;
+
+let saved =
+  JSON.parse(
+    localStorage.getItem("saved")
+  ) || [];
+
+let interests =
+  JSON.parse(
+    localStorage.getItem("interests")
+  ) || {};
+
+const placeholders = {
+
+  top:
+    "https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=1200",
+
+  tech:
+    "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200",
+
+  world:
+    "https://images.unsplash.com/photo-1521295121783-8a321d551ad2?q=80&w=1200",
+
+  business:
+    "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=1200",
+
+  science:
+  "https://images.unsplash.com/photo-1628595351029-c2bf17511435?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+
+};
+
+function smartSummary(html){
+
+  const div =
+    document.createElement("div");
+
+  div.innerHTML = html;
+
+  let text =
+    div.innerText
+    .replace(/\s+/g," ")
+    .trim();
+
+  if(text.length <= 180){
+    return text;
+  }
+
+  let shortened =
+    text.slice(0,180);
+
+  const lastPeriod =
+    shortened.lastIndexOf(".");
+
+  const lastSpace =
+    shortened.lastIndexOf(" ");
+
+  if(lastPeriod > 120){
+    shortened =
+      shortened.slice(0,lastPeriod + 1);
+  }else{
+    shortened =
+      shortened.slice(0,lastSpace) + "...";
+  }
+
+  return shortened;
+}
+
+async function loadNews(reset=false){
+
+  try{
+
+    const api =
+      "https://api.rss2json.com/v1/api.json?rss_url=" +
+      encodeURIComponent(currentFeed);
+
+    const res =
+      await fetch(api);
+
+    const data =
+      await res.json();
+
+    if(!data.items) return;
+
+    if(reset){
+
+      allArticles =
+        data.items;
+
+      filtered =
+        data.items;
+
+      index = 0;
+
+      document
+      .getElementById("news")
+      .innerHTML = "";
+    }
+
+    renderMore();
+
+  }catch(e){
+
+    console.log(e);
+
+  }
+
+}
+
+function saveArticle(article){
+
+  const alreadySaved =
+    saved.some(a =>
+      a.link === article.link
+    );
+
+  if(alreadySaved) return;
+
+  saved.push(article);
+
+  localStorage.setItem(
+    "saved",
+    JSON.stringify(saved)
+  );
+
+  const words =
+    article.title
+    .toLowerCase()
+    .split(" ");
+
+  words.forEach(word=>{
+
+    if(word.length > 3){
+
+      if(!interests[word]){
+        interests[word] = 0;
+      }
+
+      interests[word]++;
+
+    }
+
+  });
+
+  localStorage.setItem(
+    "interests",
+    JSON.stringify(interests)
+  );
+
+}
+
+function articleScore(article){
+
+  let score = 0;
+
+  const title =
+    article.title.toLowerCase();
+
+  Object.keys(interests).forEach(word=>{
+
+    if(title.includes(word)){
+
+      score += interests[word];
+
+    }
+
+  });
+
+  if(title.includes("ai")) score += 8;
+  if(title.includes("apple")) score += 6;
+  if(title.includes("google")) score += 6;
+  if(title.includes("war")) score += 5;
+  if(title.includes("nasa")) score += 4;
+  if(title.includes("breaking")) score += 10;
+
+  return score;
+
+}
+
+function renderMore(){
+
+  const container =
+    document.getElementById("news");
+
+  const items =
+    filtered.slice(
+      index,
+      index + batchSize
+    );
+
+  items.forEach((article,i)=>{
+
+    const articleIndex = index + i;
+
+    const card =
+      document.createElement("div");
+
+    const isFeatured =
+      articleIndex === 0;
+
+    card.className =
+      isFeatured
+      ? "card featured"
+      : "card";
+
+    const img =
+
+      article.thumbnail &&
+      article.thumbnail.startsWith("http")
+
+      ? article.thumbnail
+
+      : placeholders[currentCategory];
+
+    const summary =
+      smartSummary(
+        article.description || ""
+      );
+
+    card.innerHTML = `
+
+      <div class="img-wrap">
+
+        <img
+          src="${img}"
+
+          loading="lazy"
+
+          onerror="
+            this.onerror=null;
+            this.src='${placeholders[currentCategory]}';
+          "
+        >
+
+      </div>
+
+      <a href="${article.link}" target="_blank">
+
+        <h2>${article.title}</h2>
+
+      </a>
+
+      <div class="summary">
+        ${summary}
+      </div>
+
+      <p>NPR News</p>
+
+      <button
+        class="save-btn"
+        style="
+          width:100%;
+          margin-top:10px;
+        "
+      >
+        Save Article
+      </button>
+
+    `;
+
+    card
+    .querySelector(".save-btn")
+    .addEventListener("click",()=>{
+
+      saveArticle(article);
+
+    });
+
+    container.appendChild(card);
+
+  });
+
+  index += batchSize;
+
+}
+
+function setCategory(cat){
+
+  currentCategory = cat;
+
+  currentFeed = {
+
+    top:
+      "https://feeds.npr.org/1001/rss.xml",
+
+    tech:
+      "https://feeds.npr.org/1019/rss.xml",
+
+    world:
+      "https://feeds.npr.org/1004/rss.xml",
+
+    business:
+      "https://feeds.npr.org/1006/rss.xml",
+
+    science:
+      "https://feeds.npr.org/1007/rss.xml"
+
+  }[cat];
+
+  loadNews(true);
+
+}
+
+document
+.getElementById("searchInput")
+.addEventListener("input",e=>{
+
+  const q =
+    e.target.value.toLowerCase();
+
+  filtered =
+
+    allArticles.filter(article=>
+
+      article.title
+      .toLowerCase()
+      .includes(q)
+
+    );
+
+  index = 0;
+
+  document
+  .getElementById("news")
+  .innerHTML = "";
+
+  renderMore();
+
+});
+
+function toggleTheme(){
+
+  document.body
+  .classList
+  .toggle("light");
+
+}
+
+function forYou(){
+
+  filtered =
+    [...allArticles]
+    .sort((a,b)=>
+
+      articleScore(b) -
+      articleScore(a)
+
+    );
+
+  index = 0;
+
+  document
+  .getElementById("news")
+  .innerHTML = "";
+
+  renderMore();
+
+}
+
+function showSaved(){
+
+  filtered = saved;
+
+  index = 0;
+
+  document
+  .getElementById("news")
+  .innerHTML = "";
+
+  renderMore();
+
+}
+
+window.addEventListener("scroll",()=>{
+
+  const nearBottom =
+
+    window.innerHeight +
+    window.scrollY >=
+
+    document.body.offsetHeight - 500;
+
+  if(nearBottom){
+
+    renderMore();
+
+  }
+
+});
+
+loadNews(true);
+
+</script>
+
+</body>
+</html> 
